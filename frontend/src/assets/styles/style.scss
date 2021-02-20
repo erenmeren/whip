@@ -1,0 +1,22 @@
+@import './colors.scss';
+$primary: $app-green;
+$link: $app-black;
+$body-color: $app-body-background;
+
+@import 'bulma/bulma';
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  background-color: $app-body-background;
+}
+
+.page {
+  margin: 20px 15px 20px 15px;
+}
+
+// .navbar {
+//   color: 'white' !important;
+//   background-color:#363945;
+// }
