@@ -10,7 +10,7 @@ export async function search(query: SearchQuery): Promise<Job[]> {
 
   const page = await browser.newPage()
 
-  let searchUrl = `${BASE_URL}/jobs?${buildQuery(query)}`
+  let searchUrl = `${BASE_URL}/jobs${buildQuery(query)}`
 
   try {
     await page.goto(searchUrl, { waitUntil: "networkidle2", timeout: 10000 })
@@ -73,7 +73,7 @@ function buildQuery(query: SearchQuery): string {
   const encodedWhat = encodeURIComponent(query.what) // keyword
   const encodedWhere = encodeURIComponent(query.where) // location
 
-  let searchQuery = `q=${encodedWhat}&l=${encodedWhere}`
+  let searchQuery = `?q=${encodedWhat}&l=${encodedWhere}`
 
   // jop type
   if (query.jobType) {

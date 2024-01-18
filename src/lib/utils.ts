@@ -21,3 +21,7 @@ export function getBaseUrl() {
   // assume localhost
   return `http://localhost:${process.env.PORT ?? 3000}`
 }
+
+export function daysToSeconds(days: number) {
+  return days * 24 * 60 * 60
+}
