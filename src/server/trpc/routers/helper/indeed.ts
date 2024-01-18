@@ -1,18 +1,16 @@
 import puppeteer, { ElementHandle } from "puppeteer"
-import { Job } from "@/lib/types"
+import { Job, SearchQuery } from "@/lib/types"
 import { TRPCError } from "@trpc/server"
 
 const BASE_URL = "https://uk.indeed.com"
 
-export async function search(what: string, where: string): Promise<Job[]> {
+export async function search(query: SearchQuery): Promise<Job[]> {
   const result: Job[] = []
   const browser = await puppeteer.launch({ headless: false })
 
   const page = await browser.newPage()
 
-  const encodedWhat = encodeURIComponent(what)
-  const encodedWhere = encodeURIComponent(where)
-  const searchUrl = `${BASE_URL}/jobs?q=${encodedWhat}&l=${encodedWhere}`
+  let searchUrl = `${BASE_URL}/jobs?${buildQuery(query)}`
 
   try {
     await page.goto(searchUrl, { waitUntil: "networkidle2", timeout: 10000 })
@@ -69,4 +67,44 @@ async function getJobData(jobCardDiv: ElementHandle): Promise<Job | null> {
     postedAt: "",
     status: "",
   }
+}
+
+function buildQuery(query: SearchQuery): string {
+  const encodedWhat = encodeURIComponent(query.what) // keyword
+  const encodedWhere = encodeURIComponent(query.where) // location
+
+  let searchQuery = `q=${encodedWhat}&l=${encodedWhere}`
+
+  // jop type
+  if (query.jobType) {
+    let encodedJobType = ""
+
+    if (query.jobType === "permanent") {
+      encodedJobType = encodeURIComponent("0kf:jt(permanent);")
+    } else if (query.jobType === "contract") {
+      encodedJobType = encodeURIComponent("0kf:jt(contract);")
+    }
+
+    searchQuery += `&sc=${encodedJobType}`
+  }
+
+  // posted by
+  if (query.postedBy) {
+    let encodedPostedBy = ""
+
+    if (query.postedBy === "agency") {
+      encodedPostedBy = encodeURIComponent("0bf:exdh();")
+    } else if (query.postedBy === "employer") {
+      encodedPostedBy = encodeURIComponent("0bf:exrec();")
+    }
+
+    searchQuery += `&sc=${encodedPostedBy}`
+  }
+
+  // posted at
+  if (query.postedAt) {
+    searchQuery += `&fromage=${query.postedAt}`
+  }
+
+  return searchQuery
 }

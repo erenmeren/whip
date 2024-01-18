@@ -1,15 +1,15 @@
 import puppeteer, { ElementHandle } from "puppeteer"
-import { Job } from "@/lib/types"
+import { Job, SearchQuery } from "@/lib/types"
 import { TRPCError } from "@trpc/server"
 
 const BASE_URL = "https://www.linkedin.com"
 
-export async function search(what: string, where: string): Promise<Job[]> {
+export async function search(query: SearchQuery): Promise<Job[]> {
   const result: Job[] = []
   const browser = await puppeteer.launch({ headless: false })
   const page = await browser.newPage()
-  const encodedWhat = encodeURIComponent(what)
-  const encodedWhere = encodeURIComponent(where)
+  const encodedWhat = encodeURIComponent(query.what)
+  const encodedWhere = encodeURIComponent(query.where)
   const searchUrl = `${BASE_URL}/jobs/search/?keywords=${encodedWhat}&location=${encodedWhere}&origin=JOB_SEARCH_PAGE_SEARCH_BUTTON&refresh=true&position=1&pageNum=0jobs?q=${encodedWhat}&l=${encodedWhere}`
 
   try {
