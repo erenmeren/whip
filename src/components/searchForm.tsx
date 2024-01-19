@@ -18,6 +18,7 @@ import { Icons } from "./icons"
 
 import { trpc } from "@/utils/trpc"
 import { Job, SearchQuery, SearchFormSchema } from "@/lib/types"
+import { toast } from "sonner"
 
 type Props = {
   setJobs: (jobs: Job[]) => void
@@ -27,6 +28,9 @@ export default function SearchForm({ setJobs }: Props) {
   const { mutate: searchMutation, isLoading } = trpc.job.search.useMutation({
     onSuccess: (data) => {
       setJobs(data ?? [])
+    },
+    onError: (error) => {
+      toast.error(error.message)
     },
   })
 

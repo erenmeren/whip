@@ -7,7 +7,10 @@ const BASE_URL = "https://www.linkedin.com"
 
 export async function search(query: SearchQuery): Promise<Job[]> {
   const result: Job[] = []
-  const browser = await puppeteer.launch({ headless: false })
+  const browser = await puppeteer.launch({
+    headless: false,
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+  })
   const page = await browser.newPage()
   const searchUrl = `${BASE_URL}/jobs/search/${buildQuery(query)}`
 

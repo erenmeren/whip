@@ -6,11 +6,16 @@ const BASE_URL = "https://uk.indeed.com"
 
 export async function search(query: SearchQuery): Promise<Job[]> {
   const result: Job[] = []
-  const browser = await puppeteer.launch({ headless: false })
+  const browser = await puppeteer.launch({
+    headless: false,
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+  })
 
   const page = await browser.newPage()
 
   let searchUrl = `${BASE_URL}/jobs${buildQuery(query)}`
+
+  console.log(searchUrl)
 
   try {
     await page.goto(searchUrl, { waitUntil: "networkidle2", timeout: 10000 })
