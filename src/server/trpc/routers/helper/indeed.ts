@@ -61,7 +61,7 @@ async function getJobData(jobCardDiv: ElementHandle): Promise<Job | null> {
     .join(", ")
 
   return {
-    site: "Indeed",
+    site: "indeed",
     companyName: companyName ?? "",
     companyUrl: "#",
     location: location ?? "",

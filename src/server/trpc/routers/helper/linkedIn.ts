@@ -64,7 +64,7 @@ async function getJobData(jobCardDiv: ElementHandle): Promise<Job | null> {
   const status = await statusSpanElement?.evaluate((element) => element?.textContent?.trim())
 
   return {
-    site: "LinkedIn",
+    site: "linkedIn",
     companyName: compnayName ?? "",
     companyUrl: companyUrl ?? "",
     location: location ?? "",

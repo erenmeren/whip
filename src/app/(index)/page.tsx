@@ -41,34 +41,37 @@ export default function Home() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {jobs.map((job, index) => (
-                <TableRow key={index}>
-                  <TableCell>{job.title}</TableCell>
-                  <TableCell>{job.postedAt}</TableCell>
-                  <TableCell>{job.status}</TableCell>
-                  <TableCell>
-                    {job.companyUrl !== "#" ? (
-                      <Link
-                        href={job.companyUrl}
-                        target="_blank"
-                        className="text-primary hover:underline hover:underline-offset-4"
-                      >
-                        {job.companyName}
-                      </Link>
-                    ) : (
-                      <span> {job.companyName}</span>
-                    )}
-                  </TableCell>
-                  <TableCell>{job.salary}</TableCell>
-                  <TableCell>{job.jobType}</TableCell>
-                  <TableCell>{job.location}</TableCell>
-                  <TableCell>
-                    <Link href={job.url} target="_blank">
-                      <Button variant="link">{job.site}</Button>
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {jobs.map(
+                (job, index) =>
+                  job.title && (
+                    <TableRow key={index}>
+                      <TableCell>{job.title}</TableCell>
+                      <TableCell>{job.postedAt}</TableCell>
+                      <TableCell>{job.status}</TableCell>
+                      <TableCell>
+                        {job.companyUrl !== "#" ? (
+                          <Link
+                            href={job.companyUrl}
+                            target="_blank"
+                            className="truncate text-primary hover:underline hover:underline-offset-4"
+                          >
+                            {job.companyName}
+                          </Link>
+                        ) : (
+                          <span className="truncate"> {job.companyName}</span>
+                        )}
+                      </TableCell>
+                      <TableCell>{job.salary}</TableCell>
+                      <TableCell>{job.jobType}</TableCell>
+                      <TableCell>{job.location}</TableCell>
+                      <TableCell>
+                        <Link href={job.url} target="_blank">
+                          <Button variant="link">{job.site}</Button>
+                        </Link>
+                      </TableCell>
+                    </TableRow>
+                  )
+              )}
             </TableBody>
           </Table>
         )}
